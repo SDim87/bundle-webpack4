@@ -1,6 +1,6 @@
 # bundle-webpack4
 
-> Верстка сайта ... . Используется [webpack4-BEM](https://github.com/SDim87/bundle-webpack4).
+> Верстка сайта (name website) . Используется [webpack4-BEM](https://github.com/SDim87/bundle-webpack4).
 
 ## Установка и запуск
 
