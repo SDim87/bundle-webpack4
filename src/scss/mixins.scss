@@ -1,0 +1,13 @@
+// mixin масштабирует размер в зависимости от переменной $mainFontSize
+// example: $mainFontSize: 18x; html {font-size: $mainFontSize} h1{font-size: rem(20);}
+@function rem($pixels, $content: $mainFontSize) {
+  @if (unitless($pixels)) {
+    $pixels: $pixels * 1px;
+  }
+
+  @if (unitless($content)) {
+    $content: $content * 1px;
+  }
+  
+  @return $pixels / $content * 1rem;
+}

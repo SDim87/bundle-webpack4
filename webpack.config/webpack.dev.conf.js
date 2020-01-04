@@ -10,8 +10,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   devServer: {
     contentBase: baseWebpackConfig.externals.paths.dist,
     port: 8081,
-    noInfo: true, // уберает информацию о компиляции в консоли
-    // quiet: true, // уберает все сообщения в консоли, в том числе и ошибки
+    noInfo: true, // убирает информацию о компиляции в консоли
+    // quiet: true, // убирает все сообщения в консоли, в том числе и ошибки
     overlay: {
       warnings: true,
       errors: true

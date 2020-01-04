@@ -1,6 +1,6 @@
 // Точка входа
 
-import "./css/style.css";
+// import "./css/style.css";
 import "./scss/style.scss";
 import './js/common';
 import './common.blocks/index';

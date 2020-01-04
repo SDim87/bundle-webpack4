@@ -1,3 +1,6 @@
+// Здесь подключаются шрифты и общие стили
+@import './libs';
+
 h1 {
   color: blue;
   display: flex;
@@ -19,4 +22,12 @@ h3 {
   @media screen and (max-width: 1200px) {
     font-size: 16px;
   }
+}
+
+.tab {
+  color: red;
+}
+
+.lorem {
+  color: red;
 }

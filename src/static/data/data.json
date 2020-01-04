@@ -1,0 +1,16 @@
+[
+  {
+    "id": "1",
+    "name": "Module first",
+    "number": "129",
+    "percent": "33",
+    "rise": "false"
+  },
+  {
+    "id": "2",
+    "name": "Module second",
+    "number": "398",
+    "percent": "12",
+    "rise": "true"
+  }
+]
