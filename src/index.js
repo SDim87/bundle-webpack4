@@ -2,8 +2,8 @@
 
 // import "./css/style.css";
 import "./scss/style.scss";
-import './js/common';
 import './common.blocks/index';
+import './assets/svg/svg-sprite';
 
 // import Lodash from 'lodash';
 // import 'vue'; // 1й способ

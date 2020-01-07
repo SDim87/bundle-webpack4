@@ -9,13 +9,13 @@ const cssNano = require('cssnano');
 const mqpacker = require("css-mqpacker"); // Package no longer supported.
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
 
 const postCssConfig = [autoprefixer, PostCssInlineSvg, PostCssSvgo, cssNano, mqpacker];
 
 const PATHS = {
   src: path.join(__dirname, '../src'),
   dist: path.join(__dirname, '../dist'),
-  assets: 'assets/'
 }
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
     paths: PATHS
   },
   entry: {
-    app: PATHS.src
+    common: PATHS.src
   },
   output: {
     filename: 'js/[name].js',
@@ -31,18 +31,14 @@ module.exports = {
     publicPath: '/'
   },
   module: {
-    rules: [{
+    rules: [
+      // Files js
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: '/node_modules/'
       },
-      {
-        test: /\.(png|jpg|gif|webp|svg)$/,
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]'
-        }
-      },
+      // Files sass
       {
         test: /\.scss$/,
         use: [
@@ -74,6 +70,7 @@ module.exports = {
           }
         ]
       },
+      // Files css
       {
         test: /\.css$/,
         use: [
@@ -96,41 +93,92 @@ module.exports = {
           },
         ]
       },
+      // Files svg
+      {
+        test: /\.svg$/,
+        include: [
+          path.resolve(__dirname, `${PATHS.src}/assets/svg`),
+        ],
+        loaders: [{
+          loader: 'svg-sprite-loader',
+        },
+        {
+          loader: 'svgo-loader',
+        }],
+      },
+      // Files fonts
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         exclude: [
-          path.resolve(__dirname, '../src/assets/svg'),
-          path.resolve(__dirname, '../src/common.blocks')
+          path.resolve(__dirname, `${PATHS.src}/assets/svg`),
+          path.resolve(__dirname, `${PATHS.src}/common.blocks`)
         ],
         use: [
-          'file-loader'
-        ]
-      }
+          {
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'fonts/',
+            },
+            loader: 'file-loader',
+          }
+        ],
+      },
+      // Files images
+      {
+        test: /\.(png|jpe?g|webp|gif)$/,
+        use: [
+          {
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'img/',
+            },
+            loader: 'file-loader',
+          }
+        ],
+      },
+      // Files .svg
+      {
+        test: /\.(svg)$/,
+        include: [
+          path.resolve(__dirname, `${PATHS.src}/common.blocks`),
+        ],
+        use: [
+          {
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'img/',
+            },
+            loader: 'file-loader',
+          }
+        ],
+      },
     ]
   },
   plugins: [
     new CleanWebpackPlugin(),
     new FriendlyErrorsWebpackPlugin(),
+    new WebpackBuildNotifierPlugin({
+      suppressSuccess: true,
+    }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
     }),
-    new CopyWebpackPlugin([{
-        from: `${PATHS.src}/img`,
-        to: 'img'
-      },
+    new CopyWebpackPlugin([
       {
         from: `${PATHS.src}/static`,
         to: ''
+      }],
+      {
+        ignore: ['*.md'],
       }
-    ]),
+    ),
     new HtmlWebpackPlugin({
       hash: false,
       template: `${PATHS.src}/index.html`,
-      filename: './index.html'
     }),
     // new HtmlWebpackPlugin({
-    //   template: 'index.html',
-    //   filename: './src/index.html'
-    // })
+    //   template: `${PATHS.src}/name.html`,
+    //   filename: './name.html'
+    // }),
   ],
 };

@@ -9,7 +9,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
   devtool: 'cheap-module-eval-source-map',
   devServer: {
     contentBase: baseWebpackConfig.externals.paths.dist,
-    port: 8081,
+    port: 8080,
     noInfo: true, // убирает информацию о компиляции в консоли
     // quiet: true, // убирает все сообщения в консоли, в том числе и ошибки
     overlay: {

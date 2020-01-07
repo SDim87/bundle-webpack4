@@ -1,6 +1,14 @@
 // Здесь подключаются шрифты и общие стили
 @import './libs';
 
+@font-face {
+  font-family: 'Roboto';
+  src: url('../assets/fonts/Roboto-Bold.woff2') format('woff2'),
+    url('../assets/fonts/Roboto-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
 h1 {
   color: blue;
   display: flex;
