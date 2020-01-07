@@ -136,7 +136,7 @@ module.exports = {
           }
         ],
       },
-      // Files .svg
+      // Files .svg from common.blocks
       {
         test: /\.(svg)$/,
         include: [
