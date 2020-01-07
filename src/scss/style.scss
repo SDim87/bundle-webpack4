@@ -1,5 +1,6 @@
 // Здесь подключаются шрифты и общие стили
 @import './libs';
+@import './variables';
 
 @font-face {
   font-family: 'Roboto';
@@ -9,33 +10,45 @@
   font-style: normal;
 }
 
-h1 {
-  color: blue;
+html {
+  color: $color-text;
+
+  font: 16px/1.5 'Roboto', Helvetica, Arial sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
   display: flex;
   flex-direction: column;
-  align-items: center;
-
-  @media screen and (max-width: 1200px) {
-    font-size: 24px;
-  }
 }
 
-h2 {
-  @media screen and (max-width: 1200px) {
-    color: green;
-  }
+main {
+  flex: 1 0 auto;
 }
 
-h3 {
-  @media screen and (max-width: 1200px) {
-    font-size: 16px;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+button,
+figure {
+  margin: 0;
+  padding: 0;
 }
 
-.tab {
-  color: red;
+a {
+  text-decoration: none;
+
+  color: inherit;
 }
 
-.lorem {
-  color: red;
-}
