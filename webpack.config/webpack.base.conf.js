@@ -36,16 +36,14 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: '/node_modules/',
-        use: [
-          { loader: 'babel-loader', }
-        ],
+        loader: 'babel-loader',
       },
-      // Files sass
+      // Files sass -> css
       {
-        test: /\.scss$/,
+        test: /\.scss|css$/,
         use: [
-          'style-loader',
-          MiniCssExtractPlugin.loader,
+          // 'style-loader', // dev
+          MiniCssExtractPlugin.loader,  // prod
           {
             loader: 'css-loader',
             options: {
@@ -57,7 +55,7 @@ module.exports = {
             options: {
               sourceMap: true,
               config: {
-                path: '../postcss.config.js',
+                path: './../postcss.config.js',
               },
               plugins() {
                 return postCssConfig;
@@ -72,41 +70,13 @@ module.exports = {
           }
         ]
       },
-      // Files css
-      {
-        test: /\.css$/,
-        use: [
-          'style-loader',
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true,
-              plugins() {
-                return postCssConfig;
-              },
-            }
-          },
-        ]
-      },
       // Files svg
       {
         test: /\.svg$/,
         include: [
           path.resolve(__dirname, `${PATHS.src}/assets/svg`),
         ],
-        loaders: [{
-          loader: 'svg-sprite-loader',
-        },
-        {
-          loader: 'svgo-loader',
-        }],
+        use: ['svg-sprite-loader','svgo-loader'],
       },
       // Files fonts
       {
