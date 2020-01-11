@@ -1,17 +1,18 @@
-const path = require('path');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-const autoprefixer = require('autoprefixer');
-const PostCssInlineSvg = require('postcss-inline-svg');
-const PostCssSvgo = require('postcss-svgo');
-const cssNano = require('cssnano');
-const mqpacker = require("css-mqpacker"); // Package no longer supported.
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const WebpackBuildNotifierPlugin = require('webpack-build-notifier');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const path = require('path')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const autoprefixer = require('autoprefixer')
+const PostCssInlineSvg = require('postcss-inline-svg')
+const PostCssSvgo = require('postcss-svgo')
+const cssNano = require('cssnano')
+const mqpacker = require('css-mqpacker') // Package no longer supported.
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const WebpackBuildNotifierPlugin = require('webpack-build-notifier')
 
-const postCssConfig = [autoprefixer, PostCssInlineSvg, PostCssSvgo, cssNano, mqpacker];
+const postCssConfig = [autoprefixer, PostCssInlineSvg, PostCssSvgo, cssNano, mqpacker]
 
 const PATHS = {
   src: path.join(__dirname, '../src'),
@@ -20,15 +21,15 @@ const PATHS = {
 
 module.exports = {
   externals: {
-    paths: PATHS
+    paths: PATHS,
   },
   entry: {
-    common: PATHS.src
+    common: PATHS.src,
   },
   output: {
     filename: 'js/[name].js',
     path: PATHS.dist,
-    publicPath: '/'
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -36,19 +37,30 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: '/node_modules/',
-        loader: 'babel-loader',
+        use: [
+          {
+            loader: 'babel-loader',
+          },
+          {
+            loader: 'eslint-loader',
+            options: {
+              emitError: true,
+              failOnError: true,
+            },
+          },
+        ],
       },
       // Files sass -> css
       {
         test: /\.scss|css$/,
         use: [
           // 'style-loader', // dev
-          MiniCssExtractPlugin.loader,  // prod
+          MiniCssExtractPlugin.loader, // prod
           {
             loader: 'css-loader',
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: 'postcss-loader',
@@ -58,32 +70,30 @@ module.exports = {
                 path: './../postcss.config.js',
               },
               plugins() {
-                return postCssConfig;
+                return postCssConfig
               },
-            }
+            },
           },
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: true
-            }
-          }
-        ]
+              sourceMap: true,
+            },
+          },
+        ],
       },
       // Files svg
       {
         test: /\.svg$/,
-        include: [
-          path.resolve(__dirname, `${PATHS.src}/assets/svg`),
-        ],
-        use: ['svg-sprite-loader','svgo-loader'],
+        include: [path.resolve(__dirname, `${PATHS.src}/assets/svg`)],
+        use: ['svg-sprite-loader', 'svgo-loader'],
       },
       // Files fonts
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         exclude: [
           path.resolve(__dirname, `${PATHS.src}/assets/svg`),
-          path.resolve(__dirname, `${PATHS.src}/common.blocks`)
+          path.resolve(__dirname, `${PATHS.src}/common.blocks`),
         ],
         use: [
           {
@@ -92,7 +102,7 @@ module.exports = {
               outputPath: 'fonts/',
             },
             loader: 'file-loader',
-          }
+          },
         ],
       },
       // Files images
@@ -105,15 +115,13 @@ module.exports = {
               outputPath: 'img/',
             },
             loader: 'file-loader',
-          }
+          },
         ],
       },
       // Files .svg from common.blocks
       {
         test: /\.(svg)$/,
-        include: [
-          path.resolve(__dirname, `${PATHS.src}/common.blocks`),
-        ],
+        include: [path.resolve(__dirname, `${PATHS.src}/common.blocks`)],
         use: [
           {
             options: {
@@ -121,10 +129,10 @@ module.exports = {
               outputPath: 'img/',
             },
             loader: 'file-loader',
-          }
+          },
         ],
       },
-    ]
+    ],
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -135,14 +143,16 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'css/[name].css',
     }),
-    new CopyWebpackPlugin([
-      {
-        from: `${PATHS.src}/static`,
-        to: ''
-      }],
+    new CopyWebpackPlugin(
+      [
+        {
+          from: `${PATHS.src}/static`,
+          to: '',
+        },
+      ],
       {
         ignore: ['*.md'],
-      }
+      },
     ),
     new HtmlWebpackPlugin({
       hash: false,
@@ -153,4 +163,4 @@ module.exports = {
     //   filename: './name.html'
     // }),
   ],
-};
+}
