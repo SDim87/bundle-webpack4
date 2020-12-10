@@ -1,10 +1,11 @@
 # common.blocks
 
 Здесь хранятся файлы БЭМ блоков, в соответствии со структурой:
+
 ```
 common.blocks
 |-block
-|  |-block.less
+|  |-block.sass
 |  |-block.js
 |  |-block__image.jpg
 |-other-block

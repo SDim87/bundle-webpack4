@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 const path = require('path')
+const fs = require('fs')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
@@ -17,7 +18,10 @@ const postCssConfig = [autoprefixer, PostCssInlineSvg, PostCssSvgo, cssNano, mqp
 const PATHS = {
   src: path.join(__dirname, '../src'),
   dist: path.join(__dirname, '../dist'),
+  pages: path.join(__dirname, '../src/pages')
 }
+
+const PAGES = fs.readdirSync(PATHS.pages).filter(fileName => fileName.endsWith('.pug'))
 
 module.exports = {
   externals: {
@@ -33,6 +37,11 @@ module.exports = {
   },
   module: {
     rules: [
+      // Files pug
+      {
+        test: /\.pug$/,
+        loader: 'pug-loader'
+      },
       // Files js
       {
         test: /\.js$/,
@@ -154,10 +163,22 @@ module.exports = {
         ignore: ['*.md'],
       },
     ),
-    new HtmlWebpackPlugin({
-      hash: false,
-      template: `${PATHS.src}/index.html`,
-    }),
+    
+    // добавление страниц pug вручную
+    // new HtmlWebpackPlugin({
+    //   template: `${PATHS.pages}/index.pug`,
+    //   filename: './index.html',
+    //   inject: true
+    // }),
+    // собирает все файлы pug автоматом
+    ...PAGES.map(page => new HtmlWebpackPlugin({
+      template: `${PATHS.pages}/${page}`,
+      filename: `./${page.replace(/\.pug/, '.html')}`
+    }))
+    // new HtmlWebpackPlugin({
+    //   hash: false,
+    //   template: `${PATHS.src}/index.html`,
+    // }),
     // new HtmlWebpackPlugin({
     //   template: `${PATHS.src}/name.html`,
     //   filename: './name.html'
